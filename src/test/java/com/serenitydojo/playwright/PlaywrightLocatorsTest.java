@@ -1,6 +1,7 @@
 package com.serenitydojo.playwright;
 
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.assertions.LocatorAssertions;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
@@ -194,12 +195,13 @@ public class PlaywrightLocatorsTest {
         void byHeaderRoleLevel() {
             openPage();
 
-            List<String> level4Headings
-                    = page.getByRole(AriaRole.HEADING,
-                            new Page.GetByRoleOptions()
-                                    .setName("Pliers")
-                                    .setLevel(5))
-                    .allTextContents();
+            Locator headings = page.getByRole(
+                    AriaRole.HEADING,
+                    new Page.GetByRoleOptions().setLevel(5)
+            );
+            assertThat(headings.first()).isVisible();
+
+            List<String> level4Headings = headings.allTextContents();
 
             org.assertj.core.api.Assertions.assertThat(level4Headings).isNotEmpty();
         }
@@ -379,12 +381,14 @@ public class PlaywrightLocatorsTest {
         void filteringMenuItemsByLocator() {
             openPage();;
 
-            List<String> allProducts = page.locator(".card")
+            Locator allProducts = page.locator(".card")
                     .filter(new Locator.FilterOptions().setHas(page.getByText("Out of stock")))
-                    .getByTestId("product-name")
-                    .allTextContents();
+                    .getByTestId("product-name");
 
-            org.assertj.core.api.Assertions.assertThat(allProducts).hasSize(1)
+            assertThat(allProducts.first()).isVisible();
+            List<String> allProductNames = allProducts.allTextContents();
+
+            org.assertj.core.api.Assertions.assertThat(allProductNames).hasSize(1)
                     .allMatch(name -> name.contains("Long Nose Pliers"));
         }
     }
