@@ -391,6 +391,5 @@ public class PlaywrightLocatorsTest {
 
     private void openPage() {
         page.navigate("https://practicesoftwaretesting.com");
-        page.waitForLoadState(LoadState.NETWORKIDLE);
     }
 }
