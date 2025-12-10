@@ -1,5 +1,6 @@
 package com.serenitydojo.playwright.toolshop.contact;
 
+import com.microsoft.playwright.assertions.LocatorAssertions;
 import com.microsoft.playwright.options.AriaRole;
 import com.serenitydojo.playwright.toolshop.catalog.pageobjects.NavBar;
 import com.serenitydojo.playwright.toolshop.fixtures.PlaywrightTestCase;
@@ -69,12 +70,9 @@ public class ContactFormTest extends PlaywrightTestCase {
 
         // Clear one of the fields
         contactForm.clearField(fieldName);
-
+        page.waitForTimeout(250);
         contactForm.submitForm();
 
-        if (!page.getByRole(AriaRole.ALERT).isVisible()) {
-            int i = 0;
-        }
         // Check the error message for that field
         var errorMessage = page.getByRole(AriaRole.ALERT).getByText(fieldName + " is required");
 

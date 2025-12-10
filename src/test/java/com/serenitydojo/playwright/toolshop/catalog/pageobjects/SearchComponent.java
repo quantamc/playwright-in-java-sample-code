@@ -30,7 +30,7 @@ public class SearchComponent {
     }
 
     public void sortBy(String sortFilter) {
-        page.waitForResponse("**/products?sort=**", () -> {
+        page.waitForResponse("**/products?page=0&sort=**", () -> {
             page.getByTestId("sort").selectOption(sortFilter);
         });
     }
