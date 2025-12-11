@@ -15,12 +15,14 @@ public class SearchComponent {
             page.getByPlaceholder("Search").fill(keyword);
             page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Search")).click();
         });
+        page.waitForTimeout(250);
     }
 
     public void clearSearch() {
         page.waitForResponse("**/products**", () -> {
             page.getByTestId("search-reset").click();
         });
+        page.waitForTimeout(250);
     }
 
     public void filterBy(String filterName) {
@@ -30,7 +32,7 @@ public class SearchComponent {
     }
 
     public void sortBy(String sortFilter) {
-        page.waitForResponse("**/products?sort=**", () -> {
+        page.waitForResponse("**/products?page=0&sort=**", () -> {
             page.getByTestId("sort").selectOption(sortFilter);
         });
         page.waitForTimeout(250);

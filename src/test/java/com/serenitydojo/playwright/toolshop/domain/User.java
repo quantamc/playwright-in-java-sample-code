@@ -6,28 +6,26 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * {
- *   "first_name": "John",
- *   "last_name": "Doe",
- *   "address": "Street 1",
- *   "city": "City",
- *   "state": "State",
- *   "country": "Country",
- *   "postcode": "1234AA",
- *   "phone": "0987654321",
- *   "dob": "1970-01-01",
- *   "password": "S1!uper-secret",
- *   "email": "john@doe.example"
- * }
+ *  {
+ *  "first_name": "John",
+ *  "last_name": "Doe",
+ *  "address": {
+ *    "street": "Street 1",
+ *    "city": "City",
+ *    "state": "State",
+ *    "country": "Country",
+ *    "postal_code": "1234AA"
+ *  },
+ *  "phone": "0987654321",
+ *  "dob": "1970-01-01",
+ *  "password": "SuperSecure@123",
+ *  "email": "john@doe.example"
+ *  }
  */
 public record User(
     String first_name,
     String last_name,
-    String address,
-    String city,
-    String state,
-    String country,
-    String postcode,
+    Address address,
     String phone,
     String dob,
     String password,
@@ -44,11 +42,13 @@ public record User(
         return new User(
                 firstName,
                 fake.name().lastName(),
+                new Address(
                 fake.address().streetAddress(),
                 fake.address().city(),
                 fake.address().state(),
                 fake.address().country(),
-                fake.address().zipCode(),
+                fake.address().zipCode()
+                ),
                 fake.phoneNumber().phoneNumber(),
                 formattedDate,
                 "Az1234£!3",
@@ -57,6 +57,6 @@ public record User(
     }
 
     public User withPassword(String password) {
-        return new User(first_name, last_name, address, city, state, country, postcode, phone, dob, password, email);
+        return new User(first_name, last_name, address, phone, dob, password, email);
     }
 }
