@@ -1,6 +1,7 @@
 package com.serenitydojo.playwright;
 
 import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +11,35 @@ public class ASimplePlaywrightTest {
 
     @Test
     void shouldShowThePageTitle() {
-        // TODO: Write your first playwright test here
+        Playwright playwright = Playwright.create(); //sets up playwright for us
+        Browser browser = playwright.webkit().launch(); //Opens up the browser
+        Page page = browser.newPage(); // creates a new page
+
+        page.navigate("https://practicesoftwaretesting.com");
+        String title = page.title();
+
+        Assertions.assertTrue(title.contains("Practice Software Testing"));
+
+        browser.close();
+        playwright.close();
+    }
+
+    @Test
+    void shouldSearchByKeyword() {
+        Playwright playwright = Playwright.create(); //sets up playwright for us
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setChannel("chrome")); //Opens up the browser
+        Page page = browser.newPage(); // creates a new page
+
+        page.navigate("https://practicesoftwaretesting.com");
+        page.locator("[placeholder=Search]").fill("Pliers");
+        page.locator("button:has-text('Search')").click();
+
+        int matchingSearchResults = page.locator(".card").count();
+
+        Assertions.assertTrue((matchingSearchResults > 0));
+
+        browser.close();
+        playwright.close();
+
     }
 }
